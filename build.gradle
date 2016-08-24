@@ -1,0 +1,29 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		maven {
+			url uri('libs')
+		}
+	}
+}
+
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'java'
+
+
+jar {
+        baseName = 'phone'
+        version = '0.0.1'
+}
+
+repositories {
+    	mavenCentral()
+}
+configurations{
+	driver
+}
+dependencies {
+	driver "mysql:mysql-connector-java:5.1.18"
+	compile "org.springframework:spring-web:4.0.3.RELEASE"
+}

@@ -1,0 +1,23 @@
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.dhelper'
+version = '0.0.1'
+
+jar {
+	baseName='govdatahelper-interfaces'
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+	compile ("org.springframework:spring-web:4.0.3.RELEASE")	
+	compile ("org.hibernate:hibernate-core:4.3.10.Final")
+	compile("mysql:mysql-connector-java:5.1.16")
+	compile "org.springframework:spring-orm:4.1.6.RELEASE"
+}

@@ -1,0 +1,18 @@
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.dhelper'
+version = '0.0.1'
+
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+	compile ("org.springframework:spring-web:4.0.3.RELEASE")
+}
+
