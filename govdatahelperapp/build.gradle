@@ -53,7 +53,7 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
 
 	
-	compile project (":govdatahelper-interfaces")
+	//compile project (":govdatahelper-interfaces")
 }
 task wrapper(type:Wrapper){
 	gradleVersion='2.4'
