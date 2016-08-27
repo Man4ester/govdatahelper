@@ -1,0 +1,4 @@
+include 'govdatahelperapp', 'govdatahelper-interfaces'
+
+project(':govdatahelperapp').name='govdatahelperapp'
+project(':govdatahelper-interfaces').name='govdatahelper-interfaces'
