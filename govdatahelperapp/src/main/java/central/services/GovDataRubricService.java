@@ -2,6 +2,7 @@ package central.services;
 
 import central.IGovDataRubricService;
 import central.models.ConstantHolderForParse;
+import central.models.GovDataItem;
 import central.models.GovDataRubric;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -48,5 +49,24 @@ public class GovDataRubricService implements IGovDataRubricService {
             e.printStackTrace();
         }
         return rubrics;
+    }
+
+    @Override
+    public List<GovDataItem> getAllGovDataItemFromRubric(ConstantHolderForParse holder, GovDataRubric rubric, int page) throws NullPointerException {
+        LOGGER.info("getAllGovDataItemFromRubric");
+        if (!Optional.ofNullable(holder).isPresent()) {
+            throw new NullPointerException("holder is NULL");
+        }
+        if (!Optional.ofNullable(rubric).isPresent()) {
+            throw new NullPointerException("rubric is null");
+        }
+        List<GovDataItem> govDataItems = new ArrayList<>();
+        String url = String.format(holder.getUrlForItem(), rubric.getName(), page);
+        try {
+            Document doc = Jsoup.connect(url).timeout(holder.getTimeout()).get();
+        } catch (IOException e) {
+            LOGGER.error(e.getLocalizedMessage(), e);
+        }
+        return govDataItems;
     }
 }

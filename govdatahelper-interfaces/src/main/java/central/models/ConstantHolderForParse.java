@@ -17,4 +17,8 @@ public abstract class ConstantHolderForParse {
         return 5000;
     }
 
+    public String getUrlForItem(){
+        return "";
+    }
+
 }

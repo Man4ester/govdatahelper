@@ -15,5 +15,17 @@ public class GovDataConstantHolderForParse extends ConstantHolderForParse {
     public String getContentWithItems() {
         return "views-row";
     }
+
+    @Override
+    public String getUrlForItem() {
+        return "http://data.gov.ua/datasets/" +
+                "%s" +
+                "?field_organization_value=" +
+                "&title=" +
+                "&sort_bef_combine=created%20DESC" +
+                "&sort_order=DESC" +
+                "&sort_by=created" +
+                "&page=%d";
+    }
 }
 
