@@ -32,7 +32,7 @@ public class GovDataRubricServiceTest {
         String url = "http://data.gov.ua/datasets";
         assertNotNull(url);
         IGovDataRubricService testService = new GovDataRubricService();
-        List<GovDataItem> rubrics = testService.getAllGovDataItemFromRubric();
+        List<GovDataItem> rubrics = testService.getAllGovDataItemFromRubric(new GovDataConstantHolderForParse(),null,0);
         rubrics.forEach((r) -> {
             System.out.println(r.getName() );
         });
