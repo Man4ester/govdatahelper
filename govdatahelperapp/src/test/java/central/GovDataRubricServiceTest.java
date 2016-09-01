@@ -2,6 +2,7 @@ package central;
 
 import static org.junit.Assert.*;
 
+import central.models.GovDataItem;
 import central.models.GovDataRubric;
 import central.models.GovDataConstantHolderForParse;
 import central.services.GovDataRubricService;
@@ -23,6 +24,17 @@ public class GovDataRubricServiceTest {
         List<GovDataRubric> rubrics = testService.getAllRubricsFromUrl(url, new GovDataConstantHolderForParse());
         rubrics.forEach((r) -> {
             System.out.println(r.getName() + " " + r.getCountDocs() + " " + r.getUrl());
+        });
+    }
+
+    @Test
+    public void testGetAllGovDataItemFromRubric() {
+        String url = "http://data.gov.ua/datasets";
+        assertNotNull(url);
+        IGovDataRubricService testService = new GovDataRubricService();
+        List<GovDataItem> rubrics = testService.getAllGovDataItemFromRubric();
+        rubrics.forEach((r) -> {
+            System.out.println(r.getName() );
         });
     }
 }
