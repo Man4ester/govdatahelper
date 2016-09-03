@@ -32,7 +32,12 @@ public class GovDataRubricServiceTest {
         String url = "http://data.gov.ua/datasets";
         assertNotNull(url);
         IGovDataRubricService testService = new GovDataRubricService();
-        List<GovDataItem> rubrics = testService.getAllGovDataItemFromRubric(new GovDataConstantHolderForParse(),null,0);
+        List<GovDataRubric> rubrics = testService.getAllRubricsFromUrl(url, new GovDataConstantHolderForParse());
+        if(rubrics.isEmpty()){
+            throw new NullPointerException("No result");
+        }
+        GovDataRubric rubricForTest = rubrics.get(0);
+        List<GovDataItem> items = testService.getAllGovDataItemFromRubric(new GovDataConstantHolderForParse(),rubricForTest,0);
         rubrics.forEach((r) -> {
             System.out.println(r.getName() );
         });
