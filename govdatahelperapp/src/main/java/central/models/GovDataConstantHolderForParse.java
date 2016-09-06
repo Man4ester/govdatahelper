@@ -18,11 +18,11 @@ public class GovDataConstantHolderForParse extends ConstantHolderForParse {
 
     @Override
     public String getUrlForItem() {
-        return "http://data.gov.ua/datasets/" +
+        return getRootUrl()+ "/datasets/" +
                 "%s" +
                 "?field_organization_value=" +
                 "&title=" +
-                "&sort_bef_combine=created%20DESC" +
+                "&sort_bef_combine=created DESC" +
                 "&sort_order=DESC" +
                 "&sort_by=created" +
                 "&page=%d";

@@ -38,8 +38,8 @@ public class GovDataRubricServiceTest {
         }
         GovDataRubric rubricForTest = rubrics.get(0);
         List<GovDataItem> items = testService.getAllGovDataItemFromRubric(new GovDataConstantHolderForParse(),rubricForTest,0);
-        rubrics.forEach((r) -> {
-            System.out.println(r.getName() );
+        items.forEach((r) -> {
+            System.out.println(r.getName()+ " " +r.getLink());
         });
     }
 }

@@ -10,7 +10,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,8 +63,23 @@ public class GovDataRubricService implements IGovDataRubricService {
         String url = String.format(holder.getUrlForItem(), rubric.getName(), page);
         try {
             Document doc = Jsoup.connect(url).timeout(holder.getTimeout()).get();
+            Elements content = doc.getElementsByClass("view-content");
+            Elements mainContent = content.get(1).getElementsByClass("views-row");
+            mainContent.forEach((c)->{
+                Elements details = c.getElementsByClass("views-field-field-big-title");
+                Element sigle = details.get(0);
+
+                GovDataItem govDataItem= new GovDataItem();
+                govDataItem.setLink(sigle.getElementsByTag("a").attr("href"));
+                govDataItem.setName(sigle.getElementsByTag("a").text());
+                govDataItem.setRubric(rubric.getName());
+                govDataItems.add(govDataItem);
+            });
         } catch (IOException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
+        }catch (IndexOutOfBoundsException e){
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException(e);
         }
         return govDataItems;
     }

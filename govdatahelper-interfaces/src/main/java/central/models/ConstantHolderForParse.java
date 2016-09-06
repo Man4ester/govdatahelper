@@ -21,4 +21,8 @@ public abstract class ConstantHolderForParse {
         return "";
     }
 
+    public String getRootUrl(){
+        return "http://data.gov.ua/";
+    }
+
 }
