@@ -16,9 +16,11 @@ import java.util.List;
 
 public class GovDataRubricServiceTest {
 
+    static String url = "http://data.gov.ua/datasets";
+
     @Test
     public void testGetAllRubricsFromUrl() {
-        String url = "http://data.gov.ua/datasets";
+
         assertNotNull(url);
         IGovDataRubricService testService = new GovDataRubricService();
         List<GovDataRubric> rubrics = testService.getAllRubricsFromUrl(url, new GovDataConstantHolderForParse());
