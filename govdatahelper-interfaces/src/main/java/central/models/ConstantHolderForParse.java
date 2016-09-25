@@ -25,4 +25,6 @@ public abstract class ConstantHolderForParse {
         return "http://data.gov.ua/";
     }
 
+    public String getUtlForFinalEntity(String link){ return  getRootUrl()+link;}
+
 }

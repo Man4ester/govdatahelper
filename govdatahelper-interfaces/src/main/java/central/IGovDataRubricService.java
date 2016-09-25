@@ -1,6 +1,7 @@
 package central;
 
 import central.models.ConstantHolderForParse;
+import central.models.GovDataFinalEntity;
 import central.models.GovDataItem;
 import central.models.GovDataRubric;
 
@@ -28,5 +29,14 @@ public interface IGovDataRubricService {
      * @throws NullPointerException if it is not filled required
      */
     List<GovDataItem> getAllGovDataItemFromRubric(ConstantHolderForParse holder, GovDataRubric rubric, int page) throws NullPointerException;
+
+    /**
+     *
+     * @param holder
+     * @param item
+     * @return
+     * @throws NullPointerException
+     */
+    GovDataFinalEntity getInfoAboutEntityByItem(ConstantHolderForParse holder,GovDataItem item) throws NullPointerException;
 
 }
