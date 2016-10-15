@@ -20,4 +20,5 @@ dependencies {
 	compile ("org.hibernate:hibernate-core:4.3.10.Final")
 	compile("mysql:mysql-connector-java:5.1.16")
 	compile "org.springframework:spring-orm:4.1.6.RELEASE"
+	compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.3.0'
 }

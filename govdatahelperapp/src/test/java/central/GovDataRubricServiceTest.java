@@ -8,6 +8,7 @@ import central.models.GovDataRubric;
 import central.models.GovDataConstantHolderForParse;
 import central.services.GovDataRubricService;
 
+import central.services.MongoStorageService;
 import org.junit.Test;
 
 import org.slf4j.Logger;
@@ -31,9 +32,13 @@ public class GovDataRubricServiceTest {
 
         assertNotNull(url);
         IGovDataRubricService testService = new GovDataRubricService();
+        IMongoStorageService mongoService = new MongoStorageService();
+        mongoService.cleanAllGovDataRubric();
+
         List<GovDataRubric> rubrics = testService.getAllRubricsFromUrl(url, new GovDataConstantHolderForParse());
         rubrics.forEach((r) -> {
             System.out.println(r.getName() + " " + r.getCountDocs() + " " + r.getUrl());
+            mongoService.saveGovDataRubric(r);
         });
     }
 
@@ -46,21 +51,27 @@ public class GovDataRubricServiceTest {
         if (rubrics.isEmpty()) {
             throw new NullPointerException("No result");
         }
-        GovDataRubric rubricForTest = rubrics.get(0);
-        List<GovDataItem> items = new ArrayList<>();
-        int addedCount = 10;
-        int currentPage = 0;
-        while (addedCount != 0) {
-            LOGGER.info("PAGE: " + currentPage);
-            List<GovDataItem> tmp = testService.getAllGovDataItemFromRubric(new GovDataConstantHolderForParse(), rubricForTest, currentPage);
-            currentPage++;
-            addedCount = tmp.size();
-            items.addAll(tmp);
+
+        IMongoStorageService mongoService = new MongoStorageService();
+        for (GovDataRubric rParse: rubrics) {
+            GovDataRubric rubricForTest = rParse;
+            List<GovDataItem> items = new ArrayList<>();
+            int addedCount = 10;
+            int currentPage = 0;
+            while (addedCount != 0) {
+                LOGGER.info("PAGE: " + currentPage);
+                List<GovDataItem> tmp = testService.getAllGovDataItemFromRubric(new GovDataConstantHolderForParse(), rubricForTest, currentPage);
+                currentPage++;
+                addedCount = tmp.size();
+                items.addAll(tmp);
+            }
+            LOGGER.info("TOTAL: " + items.size());
+            items.forEach((r) -> {
+                LOGGER.info(r.getName() + " " + r.getLink());
+                mongoService.saveGovDataItem(r);
+            });
         }
-        LOGGER.info("TOTAL: " + items.size());
-        items.forEach((r) -> {
-            LOGGER.info(r.getName() + " " + r.getLink());
-        });
+
     }
 
     @Test

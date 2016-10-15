@@ -5,6 +5,8 @@ package central.models;
  */
 public class GovDataItem {
 
+    public static final String COLLECTIONS_NAME="gov_data_item";
+
     private String rubric;
 
     private String name;
