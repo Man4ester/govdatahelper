@@ -13,7 +13,7 @@ apply plugin: 'java'
 
 
 jar {
-        baseName = 'phone'
+        baseName = 'govdatahelper'
         version = '0.0.1'
 }
 
@@ -24,6 +24,5 @@ configurations{
 	driver
 }
 dependencies {
-	driver "mysql:mysql-connector-java:5.1.18"
-	compile "org.springframework:spring-web:4.0.3.RELEASE"
+
 }

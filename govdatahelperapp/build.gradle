@@ -1,66 +1,41 @@
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'spring-boot'
-
-group = 'com.dhelper'
-version = '0.0.1'
-
-jar {
-	baseName = 'govdatahelperapp'
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
+	}
 }
 
-buildscript{
- 	repositories {
- 		mavenCentral()
- 	}
- 	dependencies{
- 		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
- 	}
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+	baseName = 'govdatahelper'
+	version =  '0.0.1'
 }
 
 repositories {
 	mavenCentral()
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
 
-
 	compile 'org.jsoup:jsoup:1.9.2'
-
-
-
-	compile "org.springframework:spring-web:4.1.6.RELEASE"
-	compile "org.springframework:spring-orm:4.1.6.RELEASE"
-	compile "org.hibernate:hibernate-core:4.3.10.Final"
-	compile "org.springframework:spring-aspects:4.1.6.RELEASE"
-	compile "commons-dbcp:commons-dbcp:1.4"
-	compile "mysql:mysql-connector-java:5.1.16"
-	compile "org.slf4j:slf4j-api:1.7.12"
-	compile "org.apache.logging.log4j:log4j-slf4j-impl:2.0"
-	compile "org.apache.logging.log4j:log4j-api:2.3"
-	compile "org.apache.logging.log4j:log4j-core:2.3"
-
-	testCompile "junit:junit:4.4"		
-	testCompile "org.springframework:spring-test:2.5"
-	testCompile "org.assertj:assertj-core:2.0.0"
-	
-	compile("org.springframework.boot:spring-boot-starter-web"){
-		exclude module:"spring-boot-starter-tomcat"
-		exclude module: "spring-boot-starter-logging"
-    	exclude module: "logback-classic"
+	// tag::jetty[]
+	compile("org.springframework.boot:spring-boot-starter-web") {
+		exclude module: "spring-boot-starter-tomcat"
 	}
 	compile("org.springframework.boot:spring-boot-starter-jetty")
-	compile("org.springframework.boot:spring-boot-starter-actuator"){
-	  exclude module: "logback-classic"
-	}
-	
-	compile("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
-
-	
+	// end::jetty[]
+	// tag::actuator[]
+	compile("org.springframework.boot:spring-boot-starter-actuator")
+	// end::actuator[]
+	testCompile("junit:junit")
 	compile project (":govdatahelper-interfaces")
-}
-task wrapper(type:Wrapper){
-	gradleVersion='2.4'
 }
