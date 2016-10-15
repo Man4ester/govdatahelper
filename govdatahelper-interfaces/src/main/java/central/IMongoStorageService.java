@@ -1,5 +1,6 @@
 package central;
 
+import central.models.GovDataFinalEntity;
 import central.models.GovDataItem;
 import central.models.GovDataRubric;
 import com.mongodb.MongoClient;
@@ -22,6 +23,11 @@ public interface IMongoStorageService {
     void saveGovDataItem(GovDataItem item) throws NullPointerException;
 
     void cleanAllGovDataItem();
+
+    void saveGovDataFinalEntity(GovDataFinalEntity entity) throws NullPointerException;
+
+    void cleanAllGovDataFinalEntity();
+
 
 
 

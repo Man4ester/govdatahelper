@@ -133,6 +133,9 @@ public class GovDataRubricService implements IGovDataRubricService {
     private String getValueFromElememt(Element source, String rootId) {
         LOGGER.info("getValueFromElememt");
         StringBuilder val = new StringBuilder();
+        if(source.getElementsByClass(rootId).isEmpty()){
+            return "";
+        }
         Element rElement = source.getElementsByClass(rootId).get(0);
         Elements subElemenst = rElement.getElementsByClass("field-item");
         subElemenst.forEach(c -> {

@@ -1,6 +1,7 @@
 package central.services;
 
 import central.IMongoStorageService;
+import central.models.GovDataFinalEntity;
 import central.models.GovDataItem;
 import central.models.GovDataRubric;
 import com.mongodb.client.MongoDatabase;
@@ -52,6 +53,31 @@ public class MongoStorageService implements IMongoStorageService {
     public void cleanAllGovDataItem() {
         LOGGER.info("cleanAllGovDataItem");
         getDataBase().getCollection(GovDataItem.COLLECTIONS_NAME).drop();
+    }
+
+    @Override
+    public void saveGovDataFinalEntity(GovDataFinalEntity entity) throws NullPointerException {
+        LOGGER.info("saveGovDataFinalEntity");
+        if(entity==null){
+            throw new NullPointerException("entity can't be null");
+        }
+        Document document = new Document();
+        document.append("rubric",entity.getRubric());
+        document.append("email",entity.getEmail());
+        document.append("formats",entity.getFormats());
+        document.append("idEntity",entity.getId());
+        document.append("informationsOwner",entity.getInformationsOwner());
+        document.append("language",entity.getLanguage());
+        document.append("personInfo",entity.getPersonInfo());
+        document.append("version",entity.getVersion());
+
+        getDataBase().getCollection(GovDataFinalEntity.COLLECTIONS_NAME).insertOne(document);
+        LOGGER.info("saved");
+    }
+
+    @Override
+    public void cleanAllGovDataFinalEntity() {
+
     }
 
     MongoDatabase getDataBase() {

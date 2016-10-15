@@ -53,7 +53,7 @@ public class GovDataRubricServiceTest {
         }
 
         IMongoStorageService mongoService = new MongoStorageService();
-        for (GovDataRubric rParse: rubrics) {
+        for (GovDataRubric rParse : rubrics) {
             GovDataRubric rubricForTest = rParse;
             List<GovDataItem> items = new ArrayList<>();
             int addedCount = 10;
@@ -76,12 +76,27 @@ public class GovDataRubricServiceTest {
 
     @Test
     public void getInfoAoutFinalEntity() {
+        String url = "http://data.gov.ua/datasets";
+        assertNotNull(url);
         IGovDataRubricService testService = new GovDataRubricService();
-        GovDataItem item = new GovDataItem();
-        item.setRubric("Будівництво");
-        item.setLink("passport/64c228c5-d414-4c79-bd8b-4409a897abfb");
-        GovDataFinalEntity result = testService.getInfoAboutEntityByItem(new GovDataConstantHolderForParse(), item);
-        assertNotNull(result);
-        LOGGER.info(result.toString());
+        List<GovDataRubric> rubrics = testService.getAllRubricsFromUrl(url, new GovDataConstantHolderForParse());
+        IMongoStorageService mongoService = new MongoStorageService();
+        mongoService.cleanAllGovDataFinalEntity();
+        for (GovDataRubric rParse : rubrics) {
+            GovDataRubric rubricForTest = rParse;
+            int addedCount = 10;
+            int currentPage = 0;
+            while (addedCount != 0) {
+                LOGGER.info("PAGE: " + currentPage);
+                List<GovDataItem> tmp = testService.getAllGovDataItemFromRubric(new GovDataConstantHolderForParse(), rubricForTest, currentPage);
+                currentPage++;
+                addedCount = tmp.size();
+                for (GovDataItem itSave : tmp) {
+                    GovDataFinalEntity result = testService.getInfoAboutEntityByItem(new GovDataConstantHolderForParse(), itSave);
+                    mongoService.saveGovDataFinalEntity(result);
+                }
+            }
+        }
+        LOGGER.info("DONE");
     }
 }

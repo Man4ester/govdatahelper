@@ -7,6 +7,8 @@ import java.util.List;
  */
 public class GovDataFinalEntity {
 
+    public static final String COLLECTIONS_NAME="gov_data_final_entity";
+
     private String id;
 
     private String version;
