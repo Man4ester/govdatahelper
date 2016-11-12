@@ -39,4 +39,6 @@ public interface IGovDataRubricService {
      */
     GovDataFinalEntity getInfoAboutEntityByItem(ConstantHolderForParse holder,GovDataItem item) throws NullPointerException;
 
+
+
 }

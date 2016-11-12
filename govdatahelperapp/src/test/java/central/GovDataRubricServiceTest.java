@@ -1,21 +1,19 @@
 package central;
 
-import static org.junit.Assert.*;
-
+import central.models.GovDataConstantHolderForParse;
 import central.models.GovDataFinalEntity;
 import central.models.GovDataItem;
 import central.models.GovDataRubric;
-import central.models.GovDataConstantHolderForParse;
 import central.services.GovDataRubricService;
-
 import central.services.MongoStorageService;
 import org.junit.Test;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Bismark on 27.08.2016.
@@ -33,7 +31,7 @@ public class GovDataRubricServiceTest {
         assertNotNull(url);
         IGovDataRubricService testService = new GovDataRubricService();
         IMongoStorageService mongoService = new MongoStorageService();
-        if(true){
+        if (true) {
             return;
         }
         mongoService.cleanAllGovDataRubric();
@@ -50,7 +48,7 @@ public class GovDataRubricServiceTest {
         String url = "http://data.gov.ua/datasets";
         assertNotNull(url);
         IGovDataRubricService testService = new GovDataRubricService();
-        if(true){
+        if (true) {
             return;
         }
         List<GovDataRubric> rubrics = testService.getAllRubricsFromUrl(url, new GovDataConstantHolderForParse());
@@ -84,28 +82,34 @@ public class GovDataRubricServiceTest {
     public void getInfoAoutFinalEntity() {
         String url = "http://data.gov.ua/datasets";
         assertNotNull(url);
-        if(true){
-            return;
-        }
+
         IGovDataRubricService testService = new GovDataRubricService();
-        List<GovDataRubric> rubrics = testService.getAllRubricsFromUrl(url, new GovDataConstantHolderForParse());
         IMongoStorageService mongoService = new MongoStorageService();
-        mongoService.cleanAllGovDataFinalEntity();
+        List<GovDataRubric> rubrics = mongoService.getAllRubricsFromDB();
+
+        boolean needSave=false;
         for (GovDataRubric rParse : rubrics) {
-            GovDataRubric rubricForTest = rParse;
-            int addedCount = 10;
-            int currentPage = 0;
-            while (addedCount != 0) {
-                LOGGER.info("PAGE: " + currentPage);
-                List<GovDataItem> tmp = testService.getAllGovDataItemFromRubric(new GovDataConstantHolderForParse(), rubricForTest, currentPage);
-                currentPage++;
-                addedCount = tmp.size();
-                for (GovDataItem itSave : tmp) {
-                    GovDataFinalEntity result = testService.getInfoAboutEntityByItem(new GovDataConstantHolderForParse(), itSave);
-                    mongoService.saveGovDataFinalEntity(result);
-                }
+
+            if("Податки".equals(rParse.getName())){
+                needSave=true;
+                continue;
+            }
+            if(!needSave){
+                continue;
+            }
+            List<GovDataItem> tmp = mongoService.finaGovDataItemByRubricName(rParse.getName());
+            LOGGER.info("SIZE: "+tmp.size());
+            for (GovDataItem itSave : tmp) {
+                GovDataFinalEntity result = testService.getInfoAboutEntityByItem(new GovDataConstantHolderForParse(), itSave);
+                mongoService.saveGovDataFinalEntity(result);
+            }
+            try {
+                Thread.sleep(100000);
+            } catch (InterruptedException e) {
+                LOGGER.error(e.getMessage());
             }
         }
         LOGGER.info("DONE");
     }
+
 }

@@ -5,6 +5,7 @@ import central.models.ConstantHolderForParse;
 import central.models.GovDataFinalEntity;
 import central.models.GovDataItem;
 import central.models.GovDataRubric;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.Null;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -123,7 +125,12 @@ public class GovDataRubricService implements IGovDataRubricService {
             result.setVersion(fieldNameIdRevision);
             result.setPersonInfo(fieldAllName);
             LOGGER.debug("ANALYZE");
-        } catch (IOException e) {
+        }catch (HttpStatusException e){
+            LOGGER.error(e.getMessage());
+        }catch (SocketTimeoutException e){
+            LOGGER.error(e.getMessage());
+        }
+        catch (IOException e) {
             LOGGER.error(e.getMessage());
             throw new RuntimeException(e);
         }
