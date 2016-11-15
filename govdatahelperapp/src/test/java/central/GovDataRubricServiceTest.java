@@ -27,13 +27,9 @@ public class GovDataRubricServiceTest {
 
     @Test
     public void testGetAllRubricsFromUrl() {
-
         assertNotNull(url);
         IGovDataRubricService testService = new GovDataRubricService();
         IMongoStorageService mongoService = new MongoStorageService();
-        if (true) {
-            return;
-        }
         mongoService.cleanAllGovDataRubric();
 
         List<GovDataRubric> rubrics = testService.getAllRubricsFromUrl(url, new GovDataConstantHolderForParse());
@@ -87,18 +83,10 @@ public class GovDataRubricServiceTest {
         IMongoStorageService mongoService = new MongoStorageService();
         List<GovDataRubric> rubrics = mongoService.getAllRubricsFromDB();
 
-        boolean needSave=false;
         for (GovDataRubric rParse : rubrics) {
 
-            if("Податки".equals(rParse.getName())){
-                needSave=true;
-                continue;
-            }
-            if(!needSave){
-                continue;
-            }
             List<GovDataItem> tmp = mongoService.finaGovDataItemByRubricName(rParse.getName());
-            LOGGER.info("SIZE: "+tmp.size());
+            LOGGER.info("SIZE: " + tmp.size());
             for (GovDataItem itSave : tmp) {
                 GovDataFinalEntity result = testService.getInfoAboutEntityByItem(new GovDataConstantHolderForParse(), itSave);
                 mongoService.saveGovDataFinalEntity(result);

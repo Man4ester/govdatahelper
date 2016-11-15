@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface IGovDataRubricService {
     /**
-     * Need real all rubrics from url
+     * Need read all rubrics from url
      * @param url - required
      * @param holder - contains constants
      * @return list of rubrics

@@ -3,19 +3,19 @@ package central.services;
 import central.IMongoStorageService;
 import central.models.GovDataFinalEntity;
 import central.models.GovDataItem;
+import central.models.GovDataItemBlock;
 import central.models.GovDataRubric;
 import com.mongodb.Block;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import org.bson.BsonDocument;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Bismark on 15.10.2016.
@@ -49,6 +49,9 @@ public class MongoStorageService implements IMongoStorageService {
     @Override
     public void saveGovDataItem(GovDataItem item) throws NullPointerException {
         LOGGER.info("saveGovDataItem");
+        if (!Optional.ofNullable(item).isPresent()) {
+            throw new NullPointerException("item is null");
+        }
         Document dItem = new Document();
         dItem.append("link", item.getLink());
         dItem.append("name", item.getName());
@@ -60,19 +63,7 @@ public class MongoStorageService implements IMongoStorageService {
     @Override
     public List<GovDataFinalEntity> findAllGovDataFinalEntity() {
         LOGGER.info("findAll GovDataFinalEntity ");
-        return null;
-    }
-
-    @Override
-    public List<GovDataItem> finaAllGovDataItem() {
-        LOGGER.info("findAll GovDataFinalEntity ");
-        List<GovDataItem> lst = new ArrayList<>();
-        MongoCollection<Document> collection = getDataBase().getCollection(GovDataItem.COLLECTIONS_NAME);
-        MongoCursor<Document> it = collection.find().iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-        }
-        return lst;
+        throw new IllegalArgumentException("Not implemented");
     }
 
     @Override
@@ -153,11 +144,10 @@ public class MongoStorageService implements IMongoStorageService {
         List<GovDataItem> items = new ArrayList<>();
         MongoDatabase db = getDataBase();
         MongoCollection<Document> collRubrics = db.getCollection(GovDataItem.COLLECTIONS_NAME);
-        FindIterable<Document> it = collRubrics.find(new Document("rubric",rubricNme));
-        it.forEach(new CustomBlock(items));
+        FindIterable<Document> it = collRubrics.find(new Document("rubric", rubricNme));
+        it.forEach(new GovDataItemBlock(items));
         return items;
     }
-
 
 
     MongoDatabase getDataBase() {
@@ -166,24 +156,4 @@ public class MongoStorageService implements IMongoStorageService {
         }
         return mongoDatabase;
     }
-
-    class CustomBlock<T> implements  Block<T>{
-
-        List<GovDataItem> items = new ArrayList<>();
-
-        public CustomBlock(List<GovDataItem> items) {
-            this.items = items;
-        }
-
-        @Override
-        public void apply(T t) {
-            Document document=(Document) t;
-            GovDataItem r = new GovDataItem();
-            r.setRubric(document.getString("rubric"));
-            r.setName(document.getString("name"));
-            r.setLink(document.getString("link"));
-            items.add(r);
-        }
-    }
-
 }
